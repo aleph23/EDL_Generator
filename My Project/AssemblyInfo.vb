@@ -2,11 +2,11 @@
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
-' 有关程序集的一般信息由以下
-' 控制。更改这些特性值可修改
-' 与程序集关联的信息。
+' General information about the assembly is as follows
+'Control. Change these property values ​​to modify 
+'Information associated with the assembly. 
 
-'查看程序集特性的值
+'View the value of the assembly property 
 
 <Assembly: AssemblyTitle("EDL_Generator")>
 <Assembly: AssemblyDescription("")>
@@ -17,18 +17,17 @@ Imports System.Runtime.InteropServices
 
 <Assembly: ComVisible(False)>
 
-'如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-<Assembly: Guid("85f62a34-845b-426e-8f94-b7f15bb6d9a4")>
+'If this item is exposed to COM, the following GUID is used for the ID of the type library <Assembly: Guid("85f62a34-845b-426e-8f94-b7f15bb6d9a4")>
 
-' 程序集的版本信息由下列四个值组成: 
+'The version information for an assembly consists of the following four values: 
 '
-'      主版本
-'      次版本
-'      生成号
-'      修订号
+'      Main version
+'      Minor version
+'      Generation number
+'      Amendment Number
 '
-'可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值，
-' 方法是按如下所示使用“*”: :
+'You can specify all of these values, or you can use the default values ​​for Generate Number and Revision Number. 
+' The method is to use "*" as follows: 
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 <Assembly: AssemblyVersion("1.0.9.0")>
