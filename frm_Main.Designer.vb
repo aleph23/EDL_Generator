@@ -2,7 +2,7 @@
 Partial Class frm_Main
     Inherits System.Windows.Forms.Form
 
-    'Form 重写 Dispose，以清理组件列表。
+    'Form Rewrite Dispose，To clean up the list of components。
     <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
@@ -14,12 +14,12 @@ Partial Class frm_Main
         End Try
     End Sub
 
-    'Windows 窗体设计器所必需的
+    'Windows Required for the form designer
     Private components As System.ComponentModel.IContainer
 
-    '注意: 以下过程是 Windows 窗体设计器所必需的
-    '可以使用 Windows 窗体设计器修改它。  
-    '不要使用代码编辑器修改它。
+    'note: The following process is Windows Required for the form designer
+    'can use Windows Form designer to modify it。  
+    'Don't modify it with a code editor。
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
@@ -49,7 +49,7 @@ Partial Class frm_Main
         Me.lbl_disk.Name = "lbl_disk"
         Me.lbl_disk.Size = New System.Drawing.Size(53, 12)
         Me.lbl_disk.TabIndex = 0
-        Me.lbl_disk.Text = "磁盘路径"
+        Me.lbl_disk.Text = "Disk path"
         '
         'txt_Disk
         '
@@ -58,8 +58,7 @@ Partial Class frm_Main
         Me.txt_Disk.Size = New System.Drawing.Size(315, 21)
         Me.txt_Disk.TabIndex = 1
         Me.txt_Disk.Text = "/dev/block/mmcblk0"
-        Me.tip_A.SetToolTip(Me.txt_Disk, "使用 ;(半角分号) 分隔" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "对于 EMMC，一般是 /dev/block/mmcblk0" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "对于 UFS，一般是 /dev/block/sda;/dev/blo" &
-        "ck/sdb ...")
+        Me.tip_A.SetToolTip(Me.txt_Disk, "Use ;(semicolon) separated" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "for EMMC，Generally /dev/block/mmcblk0" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "for UFS，Generally /dev/block/sda;/dev/block/sdb ...")
         '
         'txt_Log
         '
@@ -70,8 +69,7 @@ Partial Class frm_Main
         Me.txt_Log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txt_Log.Size = New System.Drawing.Size(556, 257)
         Me.txt_Log.TabIndex = 5
-        Me.txt_Log.Text = "EDL(9008)线刷包制作工具" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "** 注意：在备份过程中请勿断开连接，关机或重启手机 **" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Author: cjybyjk(cjybyjk@gmai" &
-    "l.com) @ coolapk,bilibili,github,tieba,xda-developers" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        Me.txt_Log.Text = "EDL(9008)Line brush making tool" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "** Note: Do not disconnect, shut down or restart your phone during the backup process. **" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Author: cjybyjk(cjybyjk@gmail.com) @ coolapk,bilibili,github,tieba,xda-developers" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'prog
         '
@@ -92,7 +90,7 @@ Partial Class frm_Main
         '
         'dlg_folder
         '
-        Me.dlg_folder.Description = "选择保存位置"
+        Me.dlg_folder.Description = "Choose a save location"
         '
         'lbl_firehose
         '
@@ -101,7 +99,7 @@ Partial Class frm_Main
         Me.lbl_firehose.Name = "lbl_firehose"
         Me.lbl_firehose.Size = New System.Drawing.Size(89, 12)
         Me.lbl_firehose.TabIndex = 10
-        Me.lbl_firehose.Text = "二进制文件路径"
+        Me.lbl_firehose.Text = "Binary file path"
         '
         'txt_firehose
         '
@@ -116,7 +114,7 @@ Partial Class frm_Main
         Me.btn_browseFirehose.Name = "btn_browseFirehose"
         Me.btn_browseFirehose.Size = New System.Drawing.Size(64, 21)
         Me.btn_browseFirehose.TabIndex = 12
-        Me.btn_browseFirehose.Text = "浏览"
+        Me.btn_browseFirehose.Text = "Browse"
         Me.btn_browseFirehose.UseVisualStyleBackColor = True
         '
         'txt_Sector
@@ -126,7 +124,7 @@ Partial Class frm_Main
         Me.txt_Sector.Size = New System.Drawing.Size(47, 21)
         Me.txt_Sector.TabIndex = 13
         Me.txt_Sector.Text = "512"
-        Me.tip_A.SetToolTip(Me.txt_Sector, "单位为 Bytes" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "对于EMMC,一般是512Bytes" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "对于UFS,一般是4096Bytes")
+        Me.tip_A.SetToolTip(Me.txt_Sector, "Unit is Bytes" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "For EMMC,Generally 512Bytes" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "For UFS,Generally 4096Bytes")
         '
         'lbl_Sector
         '
@@ -135,7 +133,7 @@ Partial Class frm_Main
         Me.lbl_Sector.Name = "lbl_Sector"
         Me.lbl_Sector.Size = New System.Drawing.Size(53, 12)
         Me.lbl_Sector.TabIndex = 14
-        Me.lbl_Sector.Text = "扇区大小"
+        Me.lbl_Sector.Text = "Sector size"
         '
         'combo_LogLevel
         '
@@ -146,7 +144,7 @@ Partial Class frm_Main
         Me.combo_LogLevel.Name = "combo_LogLevel"
         Me.combo_LogLevel.Size = New System.Drawing.Size(62, 20)
         Me.combo_LogLevel.TabIndex = 15
-        Me.tip_A.SetToolTip(Me.combo_LogLevel, "输出日志级别")
+        Me.tip_A.SetToolTip(Me.combo_LogLevel, "Output log level")
         '
         'lbl_Tip
         '
@@ -167,7 +165,7 @@ Partial Class frm_Main
         Me.cFirehose.TabIndex = 17
         Me.cFirehose.TabStop = True
         Me.cFirehose.Text = "firehose"
-        Me.tip_A.SetToolTip(Me.cFirehose, "使用 firehose 协议进行下载" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "二进制文件需要指定为 firehose程序 (例如 prog_emmc_firehose_8936.mbn)")
+        Me.tip_A.SetToolTip(Me.cFirehose, "use firehose Agreement to download" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Binary files need to be specified as Firehose program (E.g. prog_emmc_firehose_8936.mbn)")
         Me.cFirehose.UseVisualStyleBackColor = True
         '
         'cSahara
@@ -179,7 +177,7 @@ Partial Class frm_Main
         Me.cSahara.Size = New System.Drawing.Size(59, 16)
         Me.cSahara.TabIndex = 18
         Me.cSahara.Text = "sahara"
-        Me.tip_A.SetToolTip(Me.cSahara, "使用 sahara 协议进行下载" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "二进制文件需要指定为 MPRG程序 (例如 MPRG8936.mbn)" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
+        Me.tip_A.SetToolTip(Me.cSahara, "use sahara Agreement to download" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Binary files need to be specified as MPRG program (eg MPRG8936.mbn)" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         Me.cSahara.UseVisualStyleBackColor = True
         '
         'frm_Main
