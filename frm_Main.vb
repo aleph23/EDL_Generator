@@ -40,7 +40,7 @@
     End Sub
 
     Private Function RunCommand(ByVal strProc As String, ByVal strArgs As String)
-        AddLogInvoke("执行 " & strProc & " 使用参数 " & strArgs, "V")
+        AddLogInvoke("implement " & strProc & " Use parameters " & strArgs, "V")
         Dim cmd_result As String = RunCommandR(strProc, strArgs)
         AddLogInvoke("Result: " & vbCrLf & cmd_result, "V")
         Return cmd_result
@@ -51,16 +51,16 @@
         sectorSize = Convert.ToInt64(txt_Sector.Text)
         Dim disk() As String = Split(txt_Disk.Text, ";"), diskNum As Int64
         Me.Invoke(New SetProgStyleD(AddressOf SetProgStyle), ProgressBarStyle.Marquee)
-        AddLogInvoke("启动adb服务...")
+        AddLogInvoke("start adb service...")
         RunCommand(adbExe, "kill-server")
         RunCommand(adbExe, "start-server")
         Me.Invoke(New SetProgStyleD(AddressOf SetProgStyle), ProgressBarStyle.Blocks)
         If InStr(RunCommand(adbExe, "get-state"), "recovery") <= 0 Then
-            AddLogInvoke("请连接上设备并重启到recovery模式后再试", "E")
+          AddLogInvoke("Please connect the device and reboot to recovery mode and try again ", "E")
             GoTo pEnd
         End If
         If InStr(RunCommand(adbExe, "shell "" ls /sbin/sgdisk || echo 'no sgdisk' """), "no sgdisk") > 0 Then
-            AddLogInvoke("将sgdisk程序推送到设备中...")
+            AddLogInvoke("Push the sgdisk program to the device...")
             RunCommand(adbExe, "push """ & sgdiskBin & """ /sbin/sgdisk")
             RunCommand(adbExe, "shell ""chmod 0755 /sbin/sgdisk""")
         End If
@@ -77,7 +77,7 @@
             .WriteEndElement()
         End With
         For diskNum = 0 To UBound(disk)
-            AddLogInvoke("读取分区信息... 从 " & disk(diskNum))
+            AddLogInvoke("Read partition information... from " & disk(diskNum))
             Dim g_result() As String
             Dim num_gResult As Int32, tmp_g_result() As String, flagStartAdd As Int64 = 0
             ReDim part(0)
@@ -111,17 +111,17 @@
                             .typeGUID = "00000000-0000-0000-0000-000000000000"
                         End If
                     End With
-                    AddLogInvoke("读取到: " & tmp_g_result(1) &
+                    AddLogInvoke("read to: " & tmp_g_result(1) &
                            " ,Label: " & tmp_g_result(7) &
                            " ,type(GUID): " & part(num_gResult - flagStartAdd).typeGUID, "D")
                 End If
             Next
             Me.Invoke(New SetProgD(AddressOf SetProg), 0)
             If UBound(part) = 0 And part(0).Label = "" Then
-                AddLogInvoke("从磁盘 " & disk(diskNum) & " 读取分区信息失败，终止...", "E")
+                AddLogInvoke("from disk " & disk(diskNum) & " Failed to read partition information, terminated...", "E")
                 GoTo pEnd
             End If
-            AddLogInvoke("等待分区编辑...")
+            AddLogInvoke("Waiting for Partition Editing...")
             Me.Invoke(New SetProgStyleD(AddressOf SetProgStyle), ProgressBarStyle.Marquee)
             flagPartConf = True
             frm_EditPartConf.Show()
@@ -130,24 +130,24 @@
                 Threading.Thread.Sleep(5)
             Loop
 
-            AddLogInvoke("开始备份分区... 从 " & disk(diskNum))
+            AddLogInvoke("Start backing up partitions... from " & disk(diskNum))
             Me.Invoke(New SetProgStyleD(AddressOf SetProgStyle), ProgressBarStyle.Blocks)
             Me.Invoke(New SetProgD(AddressOf SetProgMax), UBound(part))
             Dim i As Int64
             For i = 0 To UBound(part)
                 If Not part(i).backupIt Or part(i).bakFile = "" Or CheckFile(savePath & part(i).bakFile) Then
-                    AddLogInvoke("跳过 " & part(i).Label, "D")
+                    AddLogInvoke("jump over " & part(i).Label, "D")
                     GoTo pEnd1
                 End If
-                AddLogInvoke("备份 " & part(i).Label & " 到文件 " & part(i).bakFile, "D")
+                  AddLogInvoke("back up " & part(i).Label & " to file " & part(i).bakFile, "D")
                 RunCommand(adbExe,
                            "pull /dev/block/bootdevice/by-name/" & part(i).Label & " """ &
                             savePath & part(i).bakFile & """")
                 If Not CheckFile(savePath & part(i).bakFile) Then
-                    AddLogInvoke("备份 " & part(i).Label & " 失败!", "W")
+                    AddLogInvoke("backup " & part(i).Label & " Fail!", "W")
                 Else
                     If part(i).sparsed Then
-                        AddLogInvoke("尝试稀疏化 " & part(i).bakFile, "D")
+                                AddLogInvoke("try sparce " & part(i).bakFile, "D")
                         RunCommand(sparseExe,
                                    """" & savePath & part(i).bakFile & """ """ &
                                    savePath & part(i).bakFile & ".sparse.img""")
@@ -157,17 +157,16 @@
                             IO.File.Move(savePath & part(i).bakFile & ".sparse.img",
                                      savePath & part(i).bakFile)
                         Else
-                            AddLogInvoke("稀疏化失败 " & part(i).bakFile, "W")
+                                  AddLogInvoke("Sparce failed " & part(i).bakFile, "W")
                             part(i).sparsed = False
                         End If
                     End If
                 End If
-pEnd1:
+                            pEnd1:
                 Me.Invoke(New SetProgD(AddressOf SetProg), i)
             Next
             Me.Invoke(New SetProgD(AddressOf SetProg), 0)
-
-            AddLogInvoke("写入 partition.xml,磁盘 " & diskNum)
+               AddLogInvoke("write partition.xml, disk " & diskNum)
             With writer
                 .WriteStartElement("physical_partition")
                 For i = 0 To UBound(part)
@@ -194,11 +193,11 @@ pEnd1:
 
         If cSahara.Checked Then
             ' ongoing
-            AddLogInvoke("使用Sahara协议，生成 msimage 文件...")
+            AddLogInvoke("Use the Sahara protocol，Generate msimage file...")
 
         End If
 
-        AddLogInvoke("使用高通方案脚本生成需要的文件...")
+        AddLogInvoke("Use the Qualcomm solution script to generate the required files...")
         Me.Invoke(New SetProgD(AddressOf SetProgMax), UBound(disk))
         Me.Invoke(New SetProgD(AddressOf SetProg), 0)
         For diskNum = 0 To UBound(disk)
@@ -207,11 +206,11 @@ pEnd1:
         Next
         Me.Invoke(New SetProgD(AddressOf SetProg), 0)
 
-        AddLogInvoke("复制二进制文件到输出文件夹...")
+        AddLogInvoke("Copy the binaries to the output folder...")
         IO.File.Copy(txt_firehose.Text, savePath & IO.Path.GetFileName(txt_firehose.Text), True)
 
         Me.Invoke(New SetProgStyleD(AddressOf SetProgStyle), ProgressBarStyle.Blocks)
-        AddLogInvoke("完成!")
+                    AddLogInvoke("Done!")
 pEnd:
         SyncLock Threading.Thread.CurrentThread
             threadEnd = True
@@ -221,15 +220,15 @@ pEnd:
     Private Sub btn_Go_Click(sender As Object, e As EventArgs) Handles btn_Go.Click
         If Trim(txt_Disk.Text) = "" Then
             txt_Disk.Text = "/dev/block/mmcblk0"
-            AddLog("未指定磁盘路径,使用默认值!" & vbCrLf, "W")
+            AddLog("Disk path not specified, using default value!" & vbCrLf, "W")
         End If
         If Trim(txt_Sector.Text) = "" Then
             txt_Sector.Text = "512"
-            AddLog("未指定Sector size,使用默认值!" & vbCrLf, "W")
+            AddLog("Sector size is not specified, the default value is used!" & vbCrLf, "W")
         End If
         If CheckFile(txt_firehose.Text) = False Then
-            AddLog("找不到二进制文件,停止!" & vbCrLf, "E")
-            MsgBox("找不到二进制文件!", vbCritical + vbSystemModal)
+            AddLog("Could not find binary file, stop!" & vbCrLf, "E")
+            MsgBox("binary file not found!", vbCritical + vbSystemModal)
             Exit Sub
         End If
         dlg_folder.ShowDialog()
