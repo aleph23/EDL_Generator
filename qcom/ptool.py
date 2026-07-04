@@ -160,7 +160,7 @@ def UpdateRawProgram(RawProgramXML, StartSector, size_in_KB, PHYPartition, file_
         #print "StartSector=",type(StartSector)
         #print "-----------------------------------------"
 
-        szStartByte   = str(hex(StartSector*SECTOR_SIZE_IN_BYTES))
+        szStartByte = hex(StartSector*SECTOR_SIZE_IN_BYTES)
         szStartSector = str(StartSector)
 
     #import pdb; pdb.set_trace()
@@ -1439,40 +1439,34 @@ def reflect(data,nBits):
 
 
 def CalcCRC32(array,Len):
-   k        = 8;            # length of unit (i.e. byte)
-   MSB      = 0;
-   gx	    = 0x04C11DB7;   # IEEE 32bit polynomial
-   regs     = 0xFFFFFFFF;   # init to all ones
-   regsMask = 0xFFFFFFFF;   # ensure only 32 bit answer
+    k        = 8
+    MSB      = 0;
+    gx	    = 0x04C11DB7
+    regs     = 0xFFFFFFFF
+    regsMask = 0xFFFFFFFF
+       ##print "Calculating CRC over byte length of %i" % Len
 
-   ##print "Calculating CRC over byte length of %i" % Len
+    for i in range(Len):
+        DataByte = array[i]
+        DataByte = reflect( DataByte, 8 );
 
-   for i in range(Len):
-      DataByte = array[i]
-      DataByte = reflect( DataByte, 8 );
+        for _ in range(k):
+            MSB  = DataByte>>(k-1)  ## get MSB
+            MSB &= 1                ## ensure just 1 bit
 
-      for j in range(k):
-        MSB  = DataByte>>(k-1)  ## get MSB
-        MSB &= 1                ## ensure just 1 bit
+            regsMSB = (regs>>31) & 1
 
-        regsMSB = (regs>>31) & 1
+            regs = regs<<1          ## shift regs for CRC-CCITT
 
-        regs = regs<<1          ## shift regs for CRC-CCITT
+            if regsMSB ^ MSB:       ## MSB is a 1
+                regs = regs ^ gx    ## XOR with generator poly
 
-        if regsMSB ^ MSB:       ## MSB is a 1
-            regs = regs ^ gx    ## XOR with generator poly
-
-        regs = regs & regsMask; ## Mask off excess upper bits
-
-        DataByte <<= 1          ## get to next bit
+            regs = regs & regsMask
+            DataByte <<= 1          ## get to next bit
 
 
-   regs          = regs & regsMask ## Mask off excess upper bits
-   ReflectedRegs = reflect(regs,32) ^ 0xFFFFFFFF;
-
-   #print "CRC is 0x%.8X\n" % ReflectedRegs
-
-   return ReflectedRegs
+    regs          = regs & regsMask ## Mask off excess upper bits
+    return reflect(regs,32) ^ 0xFFFFFFFF
 
 def ReturnLow32bits(var):
     return var & 0xFFFFFFFF
@@ -1500,26 +1494,21 @@ def ShowUsage():
 def CreateFinalPartitionBin():
     global OutputFolder
 
-    opfile = open("%spartition.bin" % OutputFolder, "wb")
+    with open(f"{OutputFolder}partition.bin", "wb") as opfile:
+        for i in range(3):
+            FileName = "%spartition%i.bin" % (OutputFolder,i);
+            size     = 0
 
-    for i in range(3):
-        FileName = "%spartition%i.bin" % (OutputFolder,i);
-        size     = 0
+            if os.path.isfile(FileName):
+                size = os.path.getsize(FileName)
 
-        if os.path.isfile(FileName):
-            size = os.path.getsize(FileName)
-
-            ipfile = open(FileName, "rb")
-            temp = ipfile.read()
-            opfile.write(temp)
-            ipfile.close()
-
-        if size < 8192:
-            MyArray = [0]*(8192-size)
-            for b in MyArray:
-                opfile.write(struct.pack("B", b))
-
-    opfile.close()
+                with open(FileName, "rb") as ipfile:
+                    temp = ipfile.read()
+                    opfile.write(temp)
+            if size < 8192:
+                MyArray = [0]*(8192-size)
+                for b in MyArray:
+                    opfile.write(struct.pack("B", b))
 
 
 
@@ -1535,22 +1524,22 @@ def UpdatePartitionTable(Bootable,Type,StartSector,Size,Offset,Record):
 
     #print "Size = %i" % Size
 
-    if Bootable=="true":
-        Bootable = 0x80
-    else:
-        Bootable = 0x00
-
+    Bootable = 0x80 if Bootable=="true" else 0x00
     Type = ValidateTYPE(Type)
 
     #print "\tAt Offset=0x%.4X (%d) (%d bytes left)" % (Offset,Offset,len(Record)-Offset)
 
-    Record[Offset]         = Bootable  ; Offset+=1
+    Record[Offset]         = Bootable
+    Offset+=1
 
-    Record[Offset:Offset+3]= [0,0,0]   ; Offset+=3
+    Record[Offset:Offset+3]= [0,0,0]
+    Offset+=3
 
-    Record[Offset]         = Type      ; Offset+=1
+    Record[Offset]         = Type
+    Offset+=1
 
-    Record[Offset:Offset+3]= [0,0,0]   ; Offset+=3
+    Record[Offset:Offset+3]= [0,0,0]
+    Offset+=3
 
     # First StartSector
     for b in range(4):
